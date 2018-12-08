@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="My Test suite">
+
+    <parameter name="cityFrom" value="LAS"></parameter>
+    <parameter name="cityTo" value="LAX"></parameter>
+
+    <test name="Excersice 1 - Flight from LAS to LAX">
+
+        <parameter name="adultsNumber" value="1"></parameter>
+        <parameter name="childrenNumber" value="0"></parameter>
+        <parameter name="typeOfTrip" value="roundTrip"></parameter>
+        <parameter name="sort" value="Duration (Shortest)"></parameter>
+
+        <classes>
+            <class name="com.automation.exam.tests.Excersice_1"></class>
+            <!--<class name="com.automation.exam.tests.Excersice_2"></class>-->
+        </classes>
+    </test>
+</suite>
