@@ -15,15 +15,15 @@ public class Excersice_2 extends BaseTest{
 
         PackageWidget packageWidget = landingPage.openPackageTab();
 
-        packageWidget.enterFlyingFrom(cityFrom);
+        packageWidget.flyingFrom(cityFrom);
 
-        packageWidget.enterFlyingTo(cityTo);
+        packageWidget.flyingTo(cityTo);
+
+        packageWidget.departureDate();
+
+        packageWidget.returningDate();
 
         packageWidget.search();
-
-        //packageWidget.selectDepDate();
-
-        //packageWidget.selectRetDate();
     }
 
 

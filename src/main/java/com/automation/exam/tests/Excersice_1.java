@@ -21,13 +21,13 @@ public class Excersice_1 extends BaseTest {
 
         flightWidget.selectTypeOfTrip(typeOfTrip);
 
-        flightWidget.enterFlyingFrom(cityFrom);
+        flightWidget.flyingFrom(cityFrom);
 
-        flightWidget.enterFlyingTo(cityTo);
+        flightWidget.flyingTo(cityTo);
 
-        flightWidget.selectDepDate();
+        flightWidget.departureDate();
 
-        flightWidget.selectRetDate();
+        flightWidget.returningDate();
 
         flightWidget.selectAdultsNumber(adultsNumber);
 

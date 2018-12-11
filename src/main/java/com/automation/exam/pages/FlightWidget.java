@@ -1,5 +1,6 @@
 package com.automation.exam.pages;
 
+import com.automation.exam.pages.interfaces.IWidget;
 import com.automation.exam.utils.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-public class FlightWidget extends BasePage {
+public class FlightWidget extends BasePage implements IWidget {
 
     @FindBy(id = "flight-type-roundtrip-hp-flight")
     private WebElement typeOfTripSelect;
@@ -45,7 +46,7 @@ public class FlightWidget extends BasePage {
     @FindBy(id = "flight-returning-hp-flight")
     private WebElement returningCalendar;
 
-    @FindBy(xpath = "//*[@id=\"gcw-flights-form-hp-flight\"]/div[2]/div[6]/div/ul/li/button | //*[@id=\"flight-adults-hp-flight\"]")
+    @FindBy(xpath = "//*[@id=\"gcw-flights-form-hp-flight\"]/div[3]/div[6]/div/ul/li/button | //*[@id=\"flight-adults-hp-flight\"]")
     private WebElement adultsDropdown;
 
     @FindBy(xpath = "//*[@id=\"gcw-flights-form-hp-flight\"]/div[3]/div[6]/div/ul/li/button")
@@ -127,76 +128,28 @@ public class FlightWidget extends BasePage {
         return new FlightSearchPage(getDriver());
     }
 
+    @Override
+    public void flyingFrom(String cityFrom) {
 
-
-    public void enterFlyingFrom(String cityFrom) {
-
-        Logger.printInfo("Entering the city: " + cityFrom + " as origin");
-
-        enterCity(flyingFromInput, cityFrom, result);
-
-        Logger.printInfo("Calling the method to validate the origin city ");
-
-        validateCityInput(flyingFromInput, cityFrom, result);
+        super.enterFlyingFrom(flyingFromInput, cityFrom, result);
     }
 
-    public void enterFlyingTo(String cityTo) {
+    @Override
+    public void flyingTo(String cityTo) {
 
-        Logger.printInfo("Entering the city: " + cityTo + " as destination");
-
-        enterCity(flyingToInput, cityTo, result);
-
-        Logger.printInfo("Calling the method to validate the destination city ");
-
-        validateCityInput(flyingToInput, cityTo, result);
+        super.enterFlyingFrom(flyingToInput, cityTo, result);
     }
 
-    public void selectDepDate() {
+    @Override
+    public void departureDate() {
 
-        Logger.printInfo("Waiting for the departing calendar datepicker to be clickable");
-
-        getWait().until(ExpectedConditions.elementToBeClickable(departingCalendar));
-
-        departingCalendar.click();
-
-        Logger.printInfo("Selecting departing date");
-
-        selectDate("departing", departDate);
+        super.selectTripDate("departing", departingCalendar, departDate, depRightCalendarArrow);
     }
 
-    public void selectRetDate() {
+    @Override
+    public void returningDate() {
 
-        Logger.printInfo("Waiting for the returnin calendar datepicker to be clickable");
-
-        getWait().until(ExpectedConditions.elementToBeClickable(departingCalendar));
-
-        returningCalendar.click();
-
-        Logger.printInfo("Selecting returning date");
-
-        selectDate("returning", retDate);
-    }
-
-    public void selectDate(String type, WebElement date) {
-
-        Logger.printInfo("Navigating through the datepicker calendar");
-
-        switch (type) {
-            case "departing":
-                Logger.printInfo("Selecting departing date two months from now");
-                depRightCalendarArrow.click();
-                depRightCalendarArrow.click();
-                break;
-            case "returning":
-                Logger.printInfo("Selecting returning date two months from now");
-                retRightCalendarArrow.click();
-                retRightCalendarArrow.click();
-                break;
-            default:
-                break;
-        }
-
-        date.click();
+        super.selectTripDate("returning", returningCalendar, retDate, retRightCalendarArrow);
     }
 
     public void selectTypeOfTrip(String type) {
@@ -237,75 +190,34 @@ public class FlightWidget extends BasePage {
         }
     }
 
+    @Override
     public void selectAdultsNumber(String number) {
 
-        Logger.printInfo("Waiting for the travelers dropdown to be visible");
-
-        if(doesElementExist(newTravelersDropdown)) {
-            Logger.printDebug("New page format displayed, " + number + " adults selected");
-            newTravelersDropdown.click();
-            switch (number) {
-                case "-1":
-                    selectTravelersNumber(adultsMinusBtn, -1);
-                    break;
-                case "2":
-                    selectTravelersNumber(adultsPlusBtn, 1);
-                    break;
-                case "3":
-                    selectTravelersNumber(adultsPlusBtn, 2);
-                    break;
-                default:
-                    travelersCloseBtn.click();
-                    break;
-            }
-        } else {
-            Logger.printDebug("Old page format displayed, " + number + " adults selected");
-
-            Select adults = new Select(adultsDropdown);
-
-            adults.selectByValue(number);
-        }
+          if (doesElementExist(newTravelersDropdown)) {
+              if (number.equals("-1")) {
+                  super.selectTravelers("new", newTravelersDropdown, number, adultsMinusBtn, travelersCloseBtn);
+              } else {
+                  super.selectTravelers("new", newTravelersDropdown, number, adultsPlusBtn, travelersCloseBtn);
+              }
+          } else {
+              if (number.equals("-1")) {
+                  super.selectTravelers("old", adultsDropdown, number, adultsMinusBtn, travelersCloseBtn);
+              } else {
+                  super.selectTravelers("old", adultsDropdown, number, adultsPlusBtn, travelersCloseBtn);
+              }
+          }
     }
 
-    public void selectTravelersNumber(WebElement button, int number) {
-
-        if(number < 0) {
-            for (int i=0; i > number; i--) {
-                button.click();
-            }
-        } else {
-            for(int i=number; i <= number; i++) {
-                button.click();
-            }
-        }
-        travelersCloseBtn.click();
-    }
-
+    @Override
     public void selectChildrenNumber(String childrenNumber) {
 
-        if(doesElementExist(newTravelersDropdown)) {
-            Logger.printDebug("New page format displayed, " + childrenNumber + " children selected");
-            newTravelersDropdown.click();
-            switch (childrenNumber) {
-                case "1":
-                    selectTravelersNumber(childrenPlusBtn, 1);
-                    break;
-                case "2":
-                    selectTravelersNumber(childrenPlusBtn, 2);
-                    break;
-                case "3":
-                    selectTravelersNumber(childrenPlusBtn, 3);
-                    break;
-                default:
-                    travelersCloseBtn.click();
-                    break;
-            }
+        if (doesElementExist(newTravelersDropdown)) {
+
+            super.selectTravelers("new", newTravelersDropdown, childrenNumber, childrenPlusBtn, travelersCloseBtn);
+
         } else {
-            Logger.printDebug("Old page format displayed, " + childrenNumber + " children selected");
 
-            Select children = new Select(childrenDropdown);
-
-            children.selectByValue(childrenNumber);
+            super.selectTravelers("old", childrenDropdown, childrenNumber, childrenPlusBtn, travelersCloseBtn);
         }
     }
 }

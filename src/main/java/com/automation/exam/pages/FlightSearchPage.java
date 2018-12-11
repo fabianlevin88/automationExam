@@ -305,7 +305,6 @@ public class FlightSearchPage extends BasePage {
             } catch (Exception e) {
 
             }
-
         }
 
         if (doesElementExist(noThanksBtn)) {
@@ -319,8 +318,6 @@ public class FlightSearchPage extends BasePage {
     }
 
     public void selectThisFare() {
-
-        getWait().until(ExpectedConditions.elementToBeClickable(selectThisFareLabel));
 
         if (doesElementExist(selectThisFareLabel)) {
             selectThisFareLabel.click();

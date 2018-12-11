@@ -3,8 +3,8 @@ package com.automation.exam.tests;
 import com.automation.exam.pages.LandingPage;
 import com.automation.exam.utils.Logger;
 import com.automation.exam.utils.MyDriver;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 
 import static com.automation.exam.utils.Config.getChrome;
 
@@ -14,7 +14,7 @@ public abstract class BaseTest {
     MyDriver driver;
     private LandingPage landingPage;
 
-    @BeforeSuite(alwaysRun = true)
+    @BeforeClass(alwaysRun = true)
     public void setUp() {
 
         Logger.printInfo("Before test suite started");
@@ -23,7 +23,7 @@ public abstract class BaseTest {
         landingPage = new LandingPage(driver.getDriver());
     }
 
-    @AfterSuite
+    @AfterClass
     public void tearDown() {
 
         Logger.printInfo("After suite started and disposing resources");

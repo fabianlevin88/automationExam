@@ -13,7 +13,7 @@
 
         <classes>
             <class name="com.automation.exam.tests.Excersice_1"></class>
-            <!--<class name="com.automation.exam.tests.Excersice_2"></class>-->
+            <class name="com.automation.exam.tests.Excersice_2"></class>
         </classes>
     </test>
 </suite>
